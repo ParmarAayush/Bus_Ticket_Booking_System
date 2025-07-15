@@ -23,7 +23,7 @@ const Login = () => {
   const handleLogIn = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("user/signin", userDetails);
+      await axiosInstance.post("auth/signin", userDetails);
       toast.success("User Signin successfully");
     } catch (error) {
       console.error("Signin Customer ", error);
