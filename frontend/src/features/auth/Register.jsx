@@ -21,7 +21,7 @@ const Register = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("auth/register", userDetails);
+      await axiosInstance.post("auth/register", userDetails, {withCredentials: true});
       toast.success("User register successfully");
     } catch (error) {
       console.error("Signin Customer ", error);
