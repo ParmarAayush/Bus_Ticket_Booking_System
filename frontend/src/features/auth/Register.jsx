@@ -4,11 +4,11 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Register = () => {
   const [userDetails, setUserDetails] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
-  const { username, email, password } = userDetails;
+  const { name, email, password } = userDetails;
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +38,7 @@ const Register = () => {
         </p>
         <div className="w-full">
           <p>Name</p>
-          <input onChange={handleFormChange} value={username} name="username" placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
+          <input onChange={handleFormChange} value={name} name="name" placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
         </div>
         <div className="w-full ">
           <p>Email</p>
