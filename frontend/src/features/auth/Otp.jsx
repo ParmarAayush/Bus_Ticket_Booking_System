@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { axiosInstance } from "../../api/axiosInstance";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function Otp() {
   const [otpDigits, setOtpDigits] = useState({
@@ -25,7 +25,7 @@ function Otp() {
   const handleOtpSubmit = async (e) => {
     e.preventDefault;
     try {
-      await axiosInstance.post("endpoint", otpDigits, { withCredentials: true });
+      await axiosInstance.post("auth/send-verify-otp", otpDigits, { withCredentials: true });
       toast.success("User Verified");
     } catch (error) {
       console.log("Verification Error", error);
@@ -35,6 +35,7 @@ function Otp() {
   };
   return (
     <>
+      <ToastContainer />
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <div className="flex justify-center items-center h-screen bg-gray-100"></div>
         <div class="flex flex-col items-center md:max-w-[423px] w-[380px] bg-white rounded-2xl shadow-lg p-6 sm:p-10">
