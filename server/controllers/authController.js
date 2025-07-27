@@ -121,6 +121,14 @@ export const login = async (req, res) => {
             });
         }
 
+        // Prevent login if user is not verified
+        if (!user.isAccountVerified) {
+            return res.json({
+                success: false,
+                message: "Please verify your email before logging in."
+            });
+        }
+
         // Verify password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
