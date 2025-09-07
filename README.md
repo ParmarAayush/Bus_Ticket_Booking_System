@@ -128,3 +128,6 @@ export const bookTicket = async (ticketData) => {
 | GET         | `/api/users/profile`   | Get current user profile       |
 | POST        | `/api/auth/login`      | Login user                     |
 | POST        | `/api/auth/register`   | Register user                  |
+
+---
+Test is working
