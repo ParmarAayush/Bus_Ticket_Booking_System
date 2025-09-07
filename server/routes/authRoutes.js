@@ -25,7 +25,7 @@ import {
     login,
     register,
     logout,
-    sendVerificationOtp,
+    // sendVerificationOtp,
     verifyEmail,
     isAuthenticated, resetPassword, sendPasswordResetOtp
 } from '../controllers/authController.js';
@@ -36,7 +36,7 @@ const authRouter = express.Router();
 authRouter.post('/register', register);
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
-authRouter.post('/send-verify-otp', userAuth, sendVerificationOtp);
+// authRouter.post('/send-verify-otp', userAuth, sendVerificationOtp);
 authRouter.post('/verify-account', userAuth, verifyEmail);
 authRouter.post('/is-auth', userAuth, isAuthenticated);
 authRouter.post('/send-reset-otp', sendPasswordResetOtp);

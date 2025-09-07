@@ -34,16 +34,18 @@ import User from '../models/userModel.js';
 import transport from "../config/nodeMailer.js";
 
 export const register = async (req, res) => {
-    const {name,email,password} = req.body;
-    if(!name || !email || !password){
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
         return res.json({
             success: false,
             message: "Please provide all fields"
-        })
+        });
     }
+
     try {
         // Check if user already exists
-        const existingUser = await User.findOne({email});
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.json({
                 success: false,
@@ -51,57 +53,68 @@ export const register = async (req, res) => {
             });
         }
 
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create new user
+        // Generate OTP
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+        const otpExpiry = Date.now() + 5 * 60 * 1000; // 5 minutes from now
+
+        // Create new user with OTP details
         const user = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            verifyOtp: otp,
+            verifyOtpExpireAt: otpExpiry,
+            isAccountVerified: false
         });
+
         await user.save();
 
+        // Sign JWT
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
 
+        // Set token cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-
         });
-        //send verification email
+
+        // Send verification OTP email
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
-            subject: 'Account Verification',
-            text: `Welcome to Bus Booking Website, Your account has been created with email id: ${email}`
-        }
+            subject: 'Account Verification OTP',
+            text: `Welcome to Bus Booking Website! Your account has been created.\n\nYour verification OTP is: ${otp}\n\nIt is valid until ${new Date(otpExpiry).toLocaleString()}.`
+        };
 
-        // Attempt to send verification email and log result or error for debugging
         try {
             const info = await transport.sendMail(mailOptions);
-            console.log('Email sent successfully:', info);
+            console.log('Verification OTP email sent:', info);
         } catch (mailError) {
             console.error('Error sending verification email:', mailError);
         }
 
-        // Send success response
         return res.json({
             success: true,
-            message: "User registered successfully",
-        })
+            message: "User registered successfully. Verification OTP sent to email."
+        });
 
-        }catch(error){
-        res.json({
+    } catch (error) {
+        console.error("Registration error:", error);
+        return res.json({
             success: false,
             message: "Error occurred while registering user",
             error: error.message
         });
     }
-}
+};
+
 
 export const login = async (req, res) => {
     const {email, password} = req.body;
@@ -179,40 +192,6 @@ export const logout = async (req, res) => {
             message: "Error occurred while logging out",
             error: error.message
         });
-    }
-}
-
-//user email verification
-export const sendVerificationOtp = async (req, res) => {
-    try {
-        // Use authenticated userId from middleware
-        const userId = req.user?.id;
-        if (!userId) {
-            return res.json({ success: false, message: "User not authenticated" });
-        }
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.json({ success: false, message: "User not found" });
-        }
-        if (user.isAccountVerified) {
-            return res.json({ success: false, message: "Account already verified" });
-        }
-        // Generate OTP
-        const otp = String(Math.floor(100000 + Math.random() * 900000));
-        user.verifyOtp = otp;
-        user.verifyOtpExpireAt = Date.now() + 5 * 60 * 1000;
-        await user.save();
-        // Send OTP via email
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: user.email,
-            subject: 'Account Verification OTP',
-            text: `Your verification OTP is ${otp}. It is valid until ${new Date(user.verifyOtpExpireAt).toLocaleString()}.`
-        };
-        await transport.sendMail(mailOptions);
-        res.json({ success: true, message: "Verification OTP sent successfully on email" });
-    } catch (error) {
-        res.json({ success: false, message: "Error occurred while sending verification OTP." });
     }
 }
 
