@@ -130,4 +130,4 @@ export const bookTicket = async (ticketData) => {
 | POST        | `/api/auth/register`   | Register user                  |
 
 ---
-Test is working
+
