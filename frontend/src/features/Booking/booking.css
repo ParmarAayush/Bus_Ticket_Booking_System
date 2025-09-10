@@ -1,0 +1,72 @@
+.searchBus {
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    background-color: #fae202;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBus .searchHeading {
+    font-weight: 600;
+    font-size: clamp(2rem, 2vw, 3.4rem);
+}
+
+.searchBus .searchForm {
+    display: flex;
+    gap: 10px;
+}
+
+.searchBus .searchForm .inputText {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.searchBus .searchForm .fInput {
+    position: relative;
+}
+
+.searchBus .searchForm .fInput::after {
+    content: url("/Users/parmaraayush/Temp/Bus_Ticket_Booking_System/frontend/src/assets/arrow-left-right.svg");
+    padding: 5px 10px;
+    background-color: #fcf8bd;
+    border-radius: 50%;
+    position: absolute;
+    left: -25px;
+    top: 6px;
+}
+
+.searchBus .searchForm .btn {
+    background-color: #534e4e;
+    color: white;
+    font-size: 1.1rem;
+    padding: 9px 20px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+
+/* .information {
+  background-color: #fdf5d9;
+  display: flex;
+  padding: 10px 10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.info {
+  padding: 20px 10px;
+  border-radius: 10px;
+}
+.info:hover {
+  background-color: #544f4e;
+} */

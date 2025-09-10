@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { axiosInstance } from "../../api/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
@@ -21,8 +23,9 @@ const Register = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("auth/register", userDetails, {withCredentials: true});
+      await axiosInstance.post("auth/register", userDetails, { withCredentials: true });
       toast.success("User register successfully");
+      navigate("/verify/otp");
     } catch (error) {
       console.error("Signin Customer ", error);
       const errMessage = error.response?.data?.error || error.response?.data?.message || "Something went wrong while adding customer ❌";
@@ -48,8 +51,11 @@ const Register = () => {
           <p>Password</p>
           <input onChange={handleFormChange} name="password" value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="password" required />
         </div>
-        <p>
-          Already have account? <span className="text-indigo-500 cursor-pointer">click here</span>
+        <p className="text-gray-500/90 text-sm mt-4">
+          Already have an account?{" "}
+          <a className="text-indigo-400 hover:underline" href="/login">
+            Login
+          </a>
         </p>
         <input type="submit" value="Login" className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer" />
       </form>
