@@ -13,9 +13,9 @@ const App = () => {
       <Route
         path="/home"
         element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <Home />
-          </PrivateRoute>
+          // </PrivateRoute>
         }
       />
 

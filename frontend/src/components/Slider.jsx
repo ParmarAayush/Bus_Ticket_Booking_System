@@ -1,5 +1,5 @@
 import React from "react";
-// import "./slider.css"; // or use CSS module if preferred
+import "./slider.css"; // or use CSS module if preferred
 function Slider() {
   return (
     <section>
