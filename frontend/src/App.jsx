@@ -10,14 +10,7 @@ const App = () => {
   return (
     <Routes>
       {/* Private routes */}
-      <Route
-        path="/home"
-        element={
-          // <PrivateRoute>
-            <Home />
-          // </PrivateRoute>
-        }
-      />
+      <Route path="/home" element={ <PrivateRoute> <Home /> </PrivateRoute> }/>
 
       {/* Public routes */}
       <Route path="login" element={<Login />} />

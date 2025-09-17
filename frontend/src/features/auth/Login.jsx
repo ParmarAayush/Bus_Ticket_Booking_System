@@ -17,9 +17,9 @@ const Login = () => {
     e.preventDefault();
     try {
       let result = await login(userDetails.email, userDetails.password);
-      console.log("From Login", result);
       toast.success("User Signin successfully ✅");
-      navigate("/home");
+      console.log("From login", result);
+      if (result) navigate("/home");
     } catch (error) {
       console.error("Signin Error", error);
       toast.error("Invalid credentials ❌");

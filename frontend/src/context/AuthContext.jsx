@@ -5,6 +5,8 @@ import { axiosInstance } from "../api/axiosInstance";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  console.log("Run Auth Provider");
+  
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +19,7 @@ const AuthProvider = ({ children }) => {
       console.log("fetch user will execute");
 
       try {
-        const res = await axiosInstance.get("/auth/me", { withCredentials: true });
+        const res = await axiosInstance.get("/auth/is-auth", { withCredentials: true });
         console.log("Data From auth Context",res.data);
         
         if (res.data.success) {
@@ -43,7 +45,10 @@ const AuthProvider = ({ children }) => {
     );
 
     if (res.data.success) {
+      console.log("Datat Found when login", res.data.success);
+      
       setUser(res.data.userData);
+      return res.data.userData;
     } else {
       setUser(null);
       throw new Error(res.data.message || "Login failed");
